@@ -1,0 +1,92 @@
+# ===========================================
+# ADK Agent Hub - Git Ignore Rules
+# ===========================================
+
+# Secrets & Environment Variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Python Bytecode & Runtime
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Data, Caches & Vector Storage
+/data/
+/data/chromadb/
+/data/hf_cache/
+chromadb_data/
+hf_cache/
+postgres_data/
+
+# Dynamic agents generated at runtime (keep example templates)
+services/router/dynamic_agents/*.py
+!services/router/dynamic_agents/__init__.py
+services/agent_builder/dynamic_agents/*.py
+!services/agent_builder/dynamic_agents/__init__.py
+
+# Streamlit
+.streamlit/secrets.toml
+
+# macOS & System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs & Code Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Logs & PID files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+

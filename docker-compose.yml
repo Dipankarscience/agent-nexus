@@ -1,0 +1,139 @@
+version: "3.9"
+
+services:
+  # ─── PostgreSQL ───────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: adk-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-adk_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-adk_password_change_me}
+      POSTGRES_DB: ${POSTGRES_DB:-adk_agent_hub}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./services/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-adk_user} -d ${POSTGRES_DB:-adk_agent_hub}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - adk-network
+
+  # ─── MCP Tool Server ─────────────────────────────
+  mcp-server:
+    build:
+      context: ./services/mcp_server
+      dockerfile: Dockerfile
+    container_name: adk-mcp-server
+    restart: unless-stopped
+    environment:
+      - TAVILY_API_KEY=${TAVILY_API_KEY}
+      - CHROMA_PERSIST_DIR=/data/chromadb
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
+      - HF_HOME=/data/hf_cache
+    ports:
+      - "8003:8003"
+    volumes:
+      - chromadb_data:/data/chromadb
+      - hf_cache:/data/hf_cache
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8003/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - adk-network
+
+  # ─── Router Agent Service ────────────────────────
+  router:
+    build:
+      context: ./services/router
+      dockerfile: Dockerfile
+    container_name: adk-router
+    restart: unless-stopped
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.6-flash}
+      - MCP_SERVER_URL=http://mcp-server:8003
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-adk_user}:${POSTGRES_PASSWORD:-adk_password_change_me}@postgres:5432/${POSTGRES_DB:-adk_agent_hub}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-adk_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-adk_password_change_me}
+      - POSTGRES_DB=${POSTGRES_DB:-adk_agent_hub}
+    ports:
+      - "8000:8000"
+    volumes:
+      - dynamic_agents:/app/dynamic_agents
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mcp-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - adk-network
+
+  # ─── Agent Builder Service ───────────────────────
+  agent-builder:
+    build:
+      context: ./services/agent_builder
+      dockerfile: Dockerfile
+    container_name: adk-agent-builder
+    restart: unless-stopped
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.6-flash}
+      - ROUTER_URL=http://router:8000
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-adk_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-adk_password_change_me}
+      - POSTGRES_DB=${POSTGRES_DB:-adk_agent_hub}
+    ports:
+      - "8002:8002"
+    volumes:
+      - dynamic_agents:/app/dynamic_agents
+    depends_on:
+      postgres:
+        condition: service_healthy
+      router:
+        condition: service_healthy
+    networks:
+      - adk-network
+
+  # ─── Streamlit Frontend ──────────────────────────
+  frontend:
+    build:
+      context: ./services/frontend
+      dockerfile: Dockerfile
+    container_name: adk-frontend
+    restart: unless-stopped
+    environment:
+      - ROUTER_URL=http://router:8000
+      - AGENT_BUILDER_URL=http://agent-builder:8002
+    ports:
+      - "8501:8501"
+    depends_on:
+      router:
+        condition: service_healthy
+    networks:
+      - adk-network
+
+volumes:
+  postgres_data:
+  chromadb_data:
+  hf_cache:
+  dynamic_agents:
+
+networks:
+  adk-network:
+    driver: bridge

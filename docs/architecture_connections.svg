@@ -1,0 +1,188 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 860" width="100%" height="100%" style="background:#0d1117; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="grad-user" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#388bfd" />
+      <stop offset="100%" stop-color="#1f6feb" />
+    </linearGradient>
+    <linearGradient id="grad-frontend" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff7b72" />
+      <stop offset="100%" stop-color="#d29922" />
+    </linearGradient>
+    <linearGradient id="grad-router" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2ea043" />
+      <stop offset="100%" stop-color="#238636" />
+    </linearGradient>
+    <linearGradient id="grad-builder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a371f7" />
+      <stop offset="100%" stop-color="#8957e5" />
+    </linearGradient>
+    <linearGradient id="grad-mcp" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#56d364" />
+      <stop offset="100%" stop-color="#2ea043" />
+    </linearGradient>
+    <linearGradient id="grad-db" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#388bfd" />
+      <stop offset="100%" stop-color="#1f6feb" />
+    </linearGradient>
+    <linearGradient id="grad-ext" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0883e" />
+      <stop offset="100%" stop-color="#d29922" />
+    </linearGradient>
+
+    <!-- Markers for arrows -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff" />
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#3fb950" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#bc8cff" />
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#f0883e" />
+    </marker>
+
+    <!-- Filter Shadow -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Title Banner -->
+  <text x="500" y="38" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="bold">ADK Agent Hub — Architecture &amp; Connection Topology</text>
+  <text x="500" y="60" text-anchor="middle" fill="#8b949e" font-size="13">Containerized Network Flow, Inter-Service Protocols, and Data Pipelines</text>
+
+  <!-- ==================== DOCKER BRIDGE NETWORK BOX ==================== -->
+  <rect x="30" y="85" width="940" height="745" rx="14" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="50" y="112" fill="#58a6ff" font-size="14" font-weight="bold">🐳 Docker Network: adk-network (Bridge Mode)</text>
+
+  <!-- 1. USER CLIENT -->
+  <g filter="url(#shadow)">
+    <rect x="340" y="130" width="320" height="60" rx="10" fill="url(#grad-user)" stroke="#58a6ff" stroke-width="1.5"/>
+    <text x="500" y="157" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="bold">🌐 User Web Browser</text>
+    <text x="500" y="176" text-anchor="middle" fill="#e6edf3" font-size="12">Local Client Machine </text>
+  </g>
+
+  <!-- Arrow User -> Frontend -->
+  <line x1="500" y1="190" x2="500" y2="230" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="420" y="200" width="160" height="20" rx="4" fill="#0d1117" stroke="#30363d"/>
+  <text x="500" y="214" text-anchor="middle" fill="#58a6ff" font-size="11">HTTP / WebSockets :8501</text>
+
+  <!-- 2. STREAMLIT FRONTEND -->
+  <g filter="url(#shadow)">
+    <rect x="250" y="235" width="500" height="85" rx="10" fill="#21262d" stroke="#ff7b72" stroke-width="2"/>
+    <rect x="250" y="235" width="500" height="26" rx="10" fill="url(#grad-frontend)"/>
+    <text x="500" y="253" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">🖥️ adk-frontend (Streamlit UI :8501)</text>
+    <text x="500" y="280" text-anchor="middle" fill="#c9d1d9" font-size="12">• Chat Workspace  • Target Agent Selector (Auto/Direct)  • Session Manager</text>
+    <text x="500" y="300" text-anchor="middle" fill="#8b949e" font-size="11">• Agent Builder Studio (Define, Build &amp; Test Custom Agents)</text>
+  </g>
+
+  <!-- Arrow Frontend -> Router -->
+  <path d="M 380 320 L 380 370 L 290 370 L 290 400" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <rect x="190" y="355" width="160" height="20" rx="4" fill="#0d1117" stroke="#238636"/>
+  <text x="270" y="369" text-anchor="middle" fill="#3fb950" font-size="10">POST /chat, GET /agents (:8000)</text>
+
+  <!-- Arrow Frontend -> Agent Builder -->
+  <path d="M 620 320 L 620 370 L 730 370 L 730 400" fill="none" stroke="#bc8cff" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <rect x="655" y="355" width="150" height="20" rx="4" fill="#0d1117" stroke="#8957e5"/>
+  <text x="730" y="369" text-anchor="middle" fill="#bc8cff" font-size="10">POST /build, GET /agents (:8002)</text>
+
+  <!-- 3. ROUTER AGENT SERVICE -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="405" width="460" height="210" rx="10" fill="#21262d" stroke="#238636" stroke-width="2"/>
+    <rect x="60" y="405" width="460" height="26" rx="10" fill="url(#grad-router)"/>
+    <text x="290" y="423" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">🔀 adk-router (FastAPI :8000) — Intent Gateway &amp; Brain</text>
+    
+    <!-- Sub-Agents Nested Container -->
+    <rect x="75" y="440" width="430" height="160" rx="6" fill="#161b22" stroke="#30363d"/>
+    <text x="290" y="458" text-anchor="middle" fill="#58a6ff" font-size="12" font-weight="bold">🧠 In-Memory Agent Registry &amp; Execution Engine</text>
+    
+    <!-- Prebuilt agents tags -->
+    <rect x="90" y="470" width="195" height="35" rx="4" fill="#0d1117" stroke="#30363d"/>
+    <text x="187" y="492" text-anchor="middle" fill="#e6edf3" font-size="11">🌤️ Weather Agent</text>
+
+    <rect x="295" y="470" width="195" height="35" rx="4" fill="#0d1117" stroke="#30363d"/>
+    <text x="392" y="492" text-anchor="middle" fill="#e6edf3" font-size="11">📰 News Agent</text>
+
+    <rect x="90" y="515" width="195" height="35" rx="4" fill="#0d1117" stroke="#30363d"/>
+    <text x="187" y="537" text-anchor="middle" fill="#e6edf3" font-size="11">📅 Daily Planner Agent</text>
+
+    <rect x="295" y="515" width="195" height="35" rx="4" fill="#0d1117" stroke="#8957e5"/>
+    <text x="392" y="537" text-anchor="middle" fill="#bc8cff" font-size="11">🤖 Custom Sub-Agents</text>
+
+    <text x="290" y="582" text-anchor="middle" fill="#8b949e" font-size="11">Intent Evaluation: Gemini 1.5 Flash • Hot-Reloading Registry</text>
+  </g>
+
+  <!-- 4. AGENT BUILDER SERVICE -->
+  <g filter="url(#shadow)">
+    <rect x="560" y="405" width="380" height="210" rx="10" fill="#21262d" stroke="#8957e5" stroke-width="2"/>
+    <rect x="560" y="405" width="380" height="26" rx="10" fill="url(#grad-builder)"/>
+    <text x="750" y="423" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">🛠️ adk-agent-builder (FastAPI :8002)</text>
+
+    <rect x="575" y="440" width="350" height="60" rx="6" fill="#161b22" stroke="#30363d"/>
+    <text x="750" y="462" text-anchor="middle" fill="#bc8cff" font-size="11" font-weight="bold">✨ Meta-Prompter &amp; Code Generator</text>
+    <text x="750" y="482" text-anchor="middle" fill="#8b949e" font-size="11">Gemini Refinement ➔ Jinja2 Code Generation</text>
+
+    <!-- Volume Box -->
+    <rect x="575" y="515" width="350" height="85" rx="6" fill="#0d1117" stroke="#f0883e" stroke-dasharray="4"/>
+    <text x="750" y="538" text-anchor="middle" fill="#f0883e" font-size="12" font-weight="bold">📁 Shared Volume: dynamic_agents</text>
+    <text x="750" y="558" text-anchor="middle" fill="#c9d1d9" font-size="11">Writes .py agent code &amp; agents_config.json</text>
+    <text x="750" y="578" text-anchor="middle" fill="#8b949e" font-size="10">Mounted into both Builder and Router containers</text>
+  </g>
+
+  <!-- Builder -> Router Register Arrow -->
+  <path d="M 560 480 L 520 480" fill="none" stroke="#bc8cff" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="540" y="472" text-anchor="middle" fill="#bc8cff" font-size="9">Notify Register</text>
+
+  <!-- 5. MCP TOOL SERVER -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="660" width="580" height="150" rx="10" fill="#21262d" stroke="#56d364" stroke-width="2"/>
+    <rect x="60" y="660" width="580" height="26" rx="10" fill="url(#grad-mcp)"/>
+    <text x="350" y="678" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">🧰 adk-mcp-server (FastMCP Server :8003)</text>
+
+    <!-- Tools Grid -->
+    <rect x="75" y="695" width="165" height="55" rx="6" fill="#161b22" stroke="#30363d"/>
+    <text x="157" y="718" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">🌤️ Weather Tool</text>
+    <text x="157" y="736" text-anchor="middle" fill="#8b949e" font-size="10">Open-Meteo (Zero Key)</text>
+
+    <rect x="250" y="695" width="170" height="55" rx="6" fill="#161b22" stroke="#30363d"/>
+    <text x="335" y="718" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">🔍 Web Search Tool</text>
+    <text x="335" y="736" text-anchor="middle" fill="#8b949e" font-size="10">Tavily Search API</text>
+
+    <rect x="430" y="695" width="195" height="55" rx="6" fill="#161b22" stroke="#30363d"/>
+    <text x="527" y="718" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">📚 Vector RAG Tool</text>
+    <text x="527" y="736" text-anchor="middle" fill="#8b949e" font-size="10">ChromaDB + ONNX MiniLM</text>
+
+    <text x="350" y="785" text-anchor="middle" fill="#8b949e" font-size="11">Transports: FastMCP SSE Protocol (/sse) + Direct HTTP REST (/tools/*)</text>
+  </g>
+
+  <!-- Arrow Router -> MCP -->
+  <line x1="290" y1="615" x2="290" y2="660" stroke="#3fb950" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <rect x="220" y="628" width="140" height="18" rx="3" fill="#0d1117" stroke="#238636"/>
+  <text x="290" y="641" text-anchor="middle" fill="#3fb950" font-size="10">Tool Invocations (:8003)</text>
+
+  <!-- 6. POSTGRESQL DATABASE -->
+  <g filter="url(#shadow)">
+    <rect x="680" y="660" width="260" height="150" rx="10" fill="#21262d" stroke="#58a6ff" stroke-width="2"/>
+    <rect x="680" y="660" width="260" height="26" rx="10" fill="url(#grad-db)"/>
+    <text x="810" y="678" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">🐘 adk-postgres (:5432)</text>
+
+    <rect x="695" y="695" width="230" height="100" rx="6" fill="#161b22" stroke="#30363d"/>
+    <text x="810" y="718" text-anchor="middle" fill="#58a6ff" font-size="11" font-weight="bold">PostgreSQL 16 Alpine</text>
+    <text x="810" y="738" text-anchor="middle" fill="#c9d1d9" font-size="10">• sessions (Chat Sessions)</text>
+    <text x="810" y="756" text-anchor="middle" fill="#c9d1d9" font-size="10">• messages (History &amp; Attribution)</text>
+    <text x="810" y="774" text-anchor="middle" fill="#c9d1d9" font-size="10">• agents (Dynamic Sub-Agents)</text>
+  </g>
+
+  <!-- Arrow Router -> Postgres -->
+  <path d="M 520 540 L 660 540 L 660 700 L 680 700" fill="none" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="645" y="530" fill="#58a6ff" font-size="9">AsyncPG Session CRUD</text>
+
+  <!-- Arrow Builder -> Postgres -->
+  <line x1="810" y1="615" x2="810" y2="660" stroke="#bc8cff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <text x="815" y="638" fill="#bc8cff" font-size="9">Save Agent Meta</text>
+
+</svg>
+
