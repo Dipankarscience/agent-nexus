@@ -38,6 +38,7 @@ services:
     ports:
       - "8003:8003"
     volumes:
+      - ./services/mcp_server/app:/app/app
       - chromadb_data:/data/chromadb
       - hf_cache:/data/hf_cache
     healthcheck:
@@ -68,6 +69,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
+      - ./services/router/app:/app/app
       - dynamic_agents:/app/dynamic_agents
     depends_on:
       postgres:
@@ -101,6 +103,7 @@ services:
     ports:
       - "8002:8002"
     volumes:
+      - ./services/agent_builder/app:/app/app
       - dynamic_agents:/app/dynamic_agents
     depends_on:
       postgres:
@@ -122,6 +125,8 @@ services:
       - AGENT_BUILDER_URL=http://agent-builder:8002
     ports:
       - "8501:8501"
+    volumes:
+      - ./services/frontend/app:/app/app
     depends_on:
       router:
         condition: service_healthy

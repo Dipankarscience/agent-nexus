@@ -5,6 +5,7 @@ Uses Tavily web search via the MCP server.
 
 import logging
 import httpx
+from google.genai import types
 from app.agents.base import BaseSubAgent
 
 logger = logging.getLogger(__name__)
@@ -46,25 +47,7 @@ class NewsAgent(BaseSubAgent):
                 enhanced_prompt += f"\n\nSearch results:\n{search_results}"
                 enhanced_prompt += "\n\nUse these search results to answer the user's question about news/current events."
 
-            from google.genai import types
-
-            contents = []
-            if history:
-                for msg in history:
-                    role = "user" if msg["role"] == "user" else "model"
-                    contents.append(
-                        types.Content(
-                            role=role,
-                            parts=[types.Part.from_text(text=msg["content"])],
-                        )
-                    )
-
-            contents.append(
-                types.Content(
-                    role="user",
-                    parts=[types.Part.from_text(text=message)],
-                )
-            )
+            contents = self._build_sanitized_contents(message, history)
 
             response = await self.client.aio.models.generate_content(
                 model=self.model,
@@ -76,10 +59,11 @@ class NewsAgent(BaseSubAgent):
                 ),
             )
 
-            return response.text or "I couldn't find news information at this time."
+            text = self._extract_response_text(response)
+            return text or "I couldn't find news information at this time."
 
         except Exception as e:
-            logger.error(f"News agent error: {e}")
+            logger.error(f"News agent error: {e}", exc_info=True)
             return f"Sorry, I encountered an error searching for news: {str(e)}"
 
     async def _search_news(self, query: str) -> str:

@@ -5,8 +5,8 @@ Uses MCP weather tool via the MCP server.
 
 import logging
 import httpx
+from google.genai import types
 from app.agents.base import BaseSubAgent
-from app.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -50,26 +50,7 @@ class WeatherAgent(BaseSubAgent):
                 enhanced_prompt += f"\n\nCurrent weather data:\n{weather_data}"
                 enhanced_prompt += "\n\nUse this data to answer the user's question."
 
-            from google import genai
-            from google.genai import types
-
-            contents = []
-            if history:
-                for msg in history:
-                    role = "user" if msg["role"] == "user" else "model"
-                    contents.append(
-                        types.Content(
-                            role=role,
-                            parts=[types.Part.from_text(text=msg["content"])],
-                        )
-                    )
-
-            contents.append(
-                types.Content(
-                    role="user",
-                    parts=[types.Part.from_text(text=message)],
-                )
-            )
+            contents = self._build_sanitized_contents(message, history)
 
             response = await self.client.aio.models.generate_content(
                 model=self.model,
@@ -81,17 +62,16 @@ class WeatherAgent(BaseSubAgent):
                 ),
             )
 
-            return response.text or "I couldn't get weather information at this time."
+            text = self._extract_response_text(response)
+            return text or "I couldn't get weather information at this time."
 
         except Exception as e:
-            logger.error(f"Weather agent error: {e}")
+            logger.error(f"Weather agent error: {e}", exc_info=True)
             return f"Sorry, I encountered an error getting weather information: {str(e)}"
 
     async def _extract_city(self, message: str) -> str:
         """Use Gemini to extract city name from user message."""
         try:
-            from google.genai import types
-
             response = await self.client.aio.models.generate_content(
                 model=self.model,
                 contents=[

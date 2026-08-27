@@ -202,10 +202,10 @@ async def get_agent_from_db(agent_id: str) -> Optional[dict]:
 
 
 async def list_agents_from_db() -> list[dict]:
-    """List all agents from database."""
+    """List all active agents from database with full configurations."""
     pool = await get_pool()
     rows = await pool.fetch(
-        "SELECT id, name, description, is_active, is_builtin, tools_config FROM agents WHERE is_active = TRUE ORDER BY is_builtin DESC, name ASC"
+        "SELECT id, name, description, system_prompt, is_active, is_builtin, tools_config FROM agents WHERE is_active = TRUE ORDER BY is_builtin DESC, name ASC"
     )
     import json
     return [
@@ -213,6 +213,7 @@ async def list_agents_from_db() -> list[dict]:
             "id": row["id"],
             "name": row["name"],
             "description": row["description"],
+            "system_prompt": row["system_prompt"] or "You are a helpful assistant.",
             "is_active": row["is_active"],
             "is_builtin": row["is_builtin"],
             "tools": json.loads(row["tools_config"]) if isinstance(row["tools_config"], str) else row["tools_config"],

@@ -95,12 +95,43 @@ class AgentRegistry:
         except Exception as e:
             logger.warning(f"Error loading dynamic agents: {e}")
 
+    async def sync_with_db(self):
+        """Sync in-memory registry with active agents in PostgreSQL."""
+        try:
+            from app import db
+            db_agents = await db.list_agents_from_db()
+            active_db_ids = {a["id"] for a in db_agents}
+
+            # Remove deactivated dynamic agents
+            for agent_id in list(self._agents.keys()):
+                if agent_id not in ["weather", "news", "planner"] and agent_id not in active_db_ids:
+                    self.unregister_agent(agent_id)
+
+            # Register / update active agents from DB
+            for a in db_agents:
+                if a["id"] not in self._agents:
+                    self.register_dynamic_agent(
+                        agent_id=a["id"],
+                        name=a["name"],
+                        description=a["description"],
+                        system_prompt=a.get("system_prompt", "You are a helpful assistant."),
+                        tools_config=a.get("tools", []),
+                    )
+                elif a["id"] not in ["weather", "news", "planner"]:
+                    # Keep dynamic agent fields in sync
+                    self._agents[a["id"]].name = a["name"]
+                    self._agents[a["id"]].description = a["description"]
+                    self._agents[a["id"]].system_prompt = a.get("system_prompt", self._agents[a["id"]].system_prompt)
+                    self._agents[a["id"]].tools_config = a.get("tools", self._agents[a["id"]].tools_config)
+        except Exception as e:
+            logger.warning(f"Error syncing registry with DB: {e}")
+
     def get_agent_descriptions(self) -> str:
         """Get a formatted string of all agent descriptions for the router."""
         descriptions = []
         for agent_id, agent in self._agents.items():
             descriptions.append(
-                f"- **{agent.name}** (id: {agent_id}): {agent.description}"
+                f"- Agent ID: \"{agent_id}\" | Name: \"{agent.name}\" | Specialty: {agent.description}"
             )
         return "\n".join(descriptions)
 

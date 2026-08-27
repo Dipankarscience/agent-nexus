@@ -153,11 +153,19 @@ async def list_agents():
 async def register_agent(agent: AgentInfo):
     """Register a new dynamic agent (called by Agent Builder)."""
     try:
+        system_prompt = agent.system_prompt
+        if not system_prompt:
+            agent_db = await db.get_agent_from_db(agent.id)
+            if agent_db:
+                system_prompt = agent_db.get("system_prompt", "You are a helpful assistant.")
+            else:
+                system_prompt = "You are a helpful assistant."
+
         registry.register_dynamic_agent(
             agent_id=agent.id,
             name=agent.name,
             description=agent.description,
-            system_prompt="",
+            system_prompt=system_prompt,
             tools_config=agent.tools,
         )
         return {"status": "registered", "agent_id": agent.id}

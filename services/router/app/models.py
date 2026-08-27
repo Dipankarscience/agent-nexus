@@ -27,6 +27,7 @@ class AgentInfo(BaseModel):
     id: str
     name: str
     description: str
+    system_prompt: Optional[str] = None
     is_builtin: bool = True
     is_active: bool = True
     tools: list[str] = []

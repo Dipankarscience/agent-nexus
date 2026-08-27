@@ -73,6 +73,7 @@ async def build_new_agent(request: BuildAgentRequest):
                         "id": agent_data["id"],
                         "name": agent_data["name"],
                         "description": agent_data["description"],
+                        "system_prompt": agent_data.get("system_prompt", ""),
                         "is_builtin": False,
                         "is_active": True,
                         "tools": agent_data["tools_config"],
