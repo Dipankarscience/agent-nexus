@@ -1,4 +1,4 @@
-# 🤖 ADK Agent Hub — Multi-Agent System & MCP Tool Server
+# 🤖 Agent Nexus — Multi-Agent System & MCP Tool Server
 
 A production-ready, containerized multi-agent platform powered by **Google ADK / GenAI SDK**, **Gemini Flash**, **Model Context Protocol (MCP)**, **ChromaDB with ONNX Runtime**, **PostgreSQL**, and **Streamlit**.
 
