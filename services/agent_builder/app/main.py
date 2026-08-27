@@ -29,7 +29,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="ADK Agent Hub - Agent Builder",
+    title="Agent Nexus - Agent Builder",
     description="Microservice to generate and register dynamic sub-agents",
     version="1.0.0",
     lifespan=lifespan,

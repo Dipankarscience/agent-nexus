@@ -1,6 +1,6 @@
 """
 Streamlit Frontend Main Application.
-Entry point for ADK Agent Hub Web Interface.
+Entry point for Agent Nexus Web Interface.
 """
 
 import os
@@ -16,7 +16,7 @@ import streamlit as st
 
 # Set page configuration must be the first Streamlit command
 st.set_page_config(
-    page_title="ADK Agent Hub",
+    page_title="Agent Nexus",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded",

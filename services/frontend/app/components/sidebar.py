@@ -10,7 +10,7 @@ from app.utils.api_client import api_client
 def render_sidebar():
     """Render the sidebar with navigation, agent selection, and session management."""
     with st.sidebar:
-        st.title("🤖 ADK Agent Hub")
+        st.title("🤖 Agent Nexus")
         st.caption("Powered by Google ADK & Gemini 3.6 Flash")
         st.divider()
 

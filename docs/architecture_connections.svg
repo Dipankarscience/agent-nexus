@@ -51,7 +51,7 @@
   </defs>
 
   <!-- Title Banner -->
-  <text x="500" y="38" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="bold">ADK Agent Hub — Architecture &amp; Connection Topology</text>
+  <text x="500" y="38" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="bold">Agent Nexus — Architecture &amp; Connection Topology</text>
   <text x="500" y="60" text-anchor="middle" fill="#8b949e" font-size="13">Containerized Network Flow, Inter-Service Protocols, and Data Pipelines</text>
 
   <!-- ==================== DOCKER BRIDGE NETWORK BOX ==================== -->

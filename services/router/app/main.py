@@ -32,7 +32,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="ADK Agent Hub - Router Service",
+    title="Agent Nexus - Router Service",
     description="Main routing engine for the multi-agent system",
     version="1.0.0",
     lifespan=lifespan,

@@ -1,5 +1,5 @@
 -- ===========================================
--- ADK Agent Hub - Database Schema
+-- Agent Nexus - Database Schema
 -- ===========================================
 
 -- Sessions table

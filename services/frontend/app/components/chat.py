@@ -31,7 +31,7 @@ def render_chat_view():
     # Display welcome banner if conversation is empty
     if not st.session_state.messages:
         st.info(
-            "👋 Welcome to **ADK Agent Hub**! Ask any question or pick a specialist.\n\n"
+            "👋 Welcome to **Agent Nexus**! Ask any question or pick a specialist.\n\n"
             "- 🌤️ **Weather**: _'What is the forecast in Tokyo this weekend?'_\n"
             "- 📰 **News**: _'Latest breakthroughs in quantum computing'_ \n"
             "- 📅 **Planner**: _'Plan my Monday schedule with workout and meetings'_\n"
